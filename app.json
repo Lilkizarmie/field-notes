@@ -16,6 +16,9 @@
           }
         }
       ]
-    ]
+    ],
+    "ios": {
+      "appleTeamId": "QM7GLS82T6"
+    }
   }
 }
