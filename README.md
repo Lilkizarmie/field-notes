@@ -57,6 +57,12 @@ The system uses a "Last Write Wins" policy enforced by the server, with clients 
     *   The API returns the latest server version in the response body.
     *   **Strategy**: We automatically accept the server version. The local note is updated with the server's data (`title`, `body`, `tags`, `updatedAt`) and marked as `synced`. The user's local changes are overwritten to ensure consistency.
 
+## Mock API Mode
+Due to potential instability with the external API, this project includes a **Mock API Mode**.
+*   **To Enable:** Open `src/config.ts` and set `USE_MOCK_API: true`.
+*   **Default:** The app is configured to use the **Real API** by default (`USE_MOCK_API: false`).
+*   This ensures the app can always be demonstrated fully functional, even if the backend is down.
+
 ## Setup Instructions
 
 ### Prerequisites

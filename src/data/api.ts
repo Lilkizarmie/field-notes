@@ -1,5 +1,7 @@
 import axios, { AxiosError } from 'axios';
 import { Note } from '@/domain/Note';
+import { CONFIG } from '@/config';
+import { mockApi } from './mockApi';
 
 const BASE_URL = 'https://interviewapi.czettapay.com/v1';
 const client = axios.create({
@@ -11,17 +13,26 @@ const client = axios.create({
 });
 
 export const fetchNotes = async (): Promise<Note[]> => {
+  if (CONFIG.USE_MOCK_API) {
+    return mockApi.getNotes();
+  }
   const response = await client.get<{ items: Note[] } | Note[]>('/notes');
   return response.data as Note[];
 };
 
 export const createNoteApi = async (note: Pick<Note, 'title' | 'body' | 'tags'>): Promise<Note> => {
+  if (CONFIG.USE_MOCK_API) {
+    return mockApi.createNote(note);
+  }
   const response = await client.post<Note>('/notes', note);
   return response.data;
 };
 
 // Returns null if success, or the server Note if 409 Conflict
 export const updateNoteApi = async (id: string, note: Pick<Note, 'title' | 'body' | 'tags' | 'updatedAt'>): Promise<Note | null> => {
+  if (CONFIG.USE_MOCK_API) {
+    return mockApi.updateNote(id, note);
+  }
   try {
     await client.patch(`/notes/${id}`, note);
     return null;
@@ -34,5 +45,8 @@ export const updateNoteApi = async (id: string, note: Pick<Note, 'title' | 'body
 };
 
 export const deleteNoteApi = async (id: string): Promise<void> => {
+  if (CONFIG.USE_MOCK_API) {
+    return mockApi.deleteNote(id);
+  }
   await client.delete(`/notes/${id}`);
 };
